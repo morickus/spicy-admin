@@ -1,0 +1,17 @@
+**/.prettierignore
+**/.prettierrc.json
+**/next.config.js
+**/next-env.d.ts
+**/.gitignore
+**/package.json
+**/package-lock.json
+**/README.md
+**/yarn.lock
+**/yarn-error.log
+**/node_modules
+**/src/components/icon/icomoon
+**/src/components/icon/fonts
+**/src/components/icon/icomoon.module.scss
+**/public
+**/src/themes
+**/assets/main.css

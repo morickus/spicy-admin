@@ -3,22 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "api:download": "curl http://localhost:8000/api-yaml -o .\\src\\shared\\api\\schema.yaml\n",
+    "api:generate": "orval"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "@editorjs/editorjs": "^2.30.2",
+    "@emotion/styled": "^11.11.5",
+    "@tanstack/react-query": "^5.50.1",
+    "antd": "^5.19.1",
+    "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
+    "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.4"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.4"
+    "eslint-config-next": "14.2.4",
+    "orval": "^6.31.0",
+    "prettier": "^3.3.2",
+    "typescript": "^5"
   }
 }

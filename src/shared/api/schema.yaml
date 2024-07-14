@@ -1,0 +1,544 @@
+openapi: 3.0.0
+paths:
+  /auth/sign-up:
+    post:
+      operationId: AuthController_signUp
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpBodyDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Auth
+  /auth/sign-in:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInBodyDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Auth
+  /auth/sign-out:
+    post:
+      operationId: AuthController_signOut
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Auth
+  /auth/session:
+    get:
+      operationId: AuthController_getSessionInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSessionInfoDto'
+      tags:
+        - Auth
+  /users:
+    get:
+      operationId: UsersController_findAll
+      parameters:
+        - name: page
+          required: false
+          in: query
+          example: 1
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          example: 10
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserResponseDto'
+                  - $ref: '#/components/schemas/PaginateResponseDto'
+      tags:
+        - Users
+  /categories:
+    post:
+      operationId: CategoriesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDto'
+      tags:
+        - Categories
+    get:
+      operationId: CategoriesController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponseDto'
+      tags:
+        - Categories
+  /categories/{id}:
+    put:
+      operationId: CategoriesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDto'
+      tags:
+        - Categories
+    delete:
+      operationId: CategoriesController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDto'
+      tags:
+        - Categories
+  /articles:
+    post:
+      operationId: ArticlesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseDto'
+      tags:
+        - Articles
+    get:
+      operationId: ArticlesController_findAll
+      parameters:
+        - name: page
+          required: false
+          in: query
+          example: 1
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          example: 10
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ArticleAllResponseDto'
+                  - $ref: '#/components/schemas/PaginateResponseDto'
+      tags:
+        - Articles
+  /articles/{id}:
+    patch:
+      operationId: ArticlesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseDto'
+      tags:
+        - Articles
+    delete:
+      operationId: ArticlesController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseDto'
+      tags:
+        - Articles
+  /articles/{slug}:
+    get:
+      operationId: ArticlesController_findOne
+      parameters:
+        - name: slug
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseDto'
+      tags:
+        - Articles
+  /articles/category/{slug}:
+    get:
+      operationId: ArticlesController_findByCategory
+      parameters:
+        - name: slug
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          example: 1
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          example: 10
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleResponseDto'
+      tags:
+        - Articles
+info:
+  title: Spicy
+  description: ''
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    SignUpBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        password:
+          type: string
+          example: '1234'
+      required:
+        - email
+        - password
+    SignInBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        password:
+          type: string
+          example: '1234'
+      required:
+        - email
+        - password
+    GetSessionInfoDto:
+      type: object
+      properties:
+        id:
+          type: number
+        email:
+          type: string
+        role:
+          type: string
+        iat:
+          type: number
+        exp:
+          type: number
+      required:
+        - id
+        - email
+        - role
+        - iat
+        - exp
+    PaginateResponseDto:
+      type: object
+      properties:
+        totalPages:
+          type: number
+        currentPage:
+          type: number
+        hasPrev:
+          type: boolean
+        hasNext:
+          type: boolean
+      required:
+        - totalPages
+        - currentPage
+        - hasPrev
+        - hasNext
+    UserResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+        email:
+          type: string
+      required:
+        - id
+        - email
+    CreateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: category
+      required:
+        - name
+    CategoryResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+        name:
+          type: string
+        countArticles:
+          type: number
+      required:
+        - id
+        - slug
+        - name
+    UpdateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: category
+      required:
+        - name
+    DataDto:
+      type: object
+      properties: {}
+    JsonContentDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: nQ8SZhVnEY
+        type:
+          type: string
+          example: paragraph
+        data:
+          example:
+            text: text
+          allOf:
+            - $ref: '#/components/schemas/DataDto'
+      required:
+        - type
+        - data
+    CreateArticleDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: title
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonContentDto'
+        categories:
+          example:
+            - category
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - content
+        - categories
+    ArticleResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        excerpt:
+          type: string
+        authorId:
+          type: number
+        author:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseDto'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryResponseDto'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonContentDto'
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - slug
+        - title
+        - excerpt
+        - authorId
+        - author
+        - categories
+        - content
+    UpdateArticleDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: New Title
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonContentDto'
+        categories:
+          example:
+            - category1
+            - category2
+          type: array
+          items:
+            type: string
+    ArticleAllResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        excerpt:
+          type: string
+        authorId:
+          type: number
+        author:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseDto'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryResponseDto'
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - slug
+        - title
+        - excerpt
+        - authorId
+        - author
+        - categories
