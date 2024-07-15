@@ -5,10 +5,10 @@ import { ROUTES } from '@/shared/constants/routes';
 import { useQuery } from '@tanstack/react-query';
 import { Spin } from 'antd';
 import { useRouter } from 'next/navigation';
-import { PropsWithChildren, ReactElement } from 'react';
 
-export function withAuth<P>(Component: (props: P) => ReactElement) {
-  return function withAuth(props: PropsWithChildren<P>) {
+// TODO: fix types, check build
+export const withAuth = (Component: any) => {
+  return function withAuth(props: any) {
     const router = useRouter();
 
     const { isLoading, isError } = useQuery({
@@ -22,8 +22,9 @@ export function withAuth<P>(Component: (props: P) => ReactElement) {
 
     if (isError) {
       router.replace(ROUTES.LOGIN);
+      return null;
     }
 
     return <Component {...props} />;
   };
-}
+};
