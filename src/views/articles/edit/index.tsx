@@ -1,5 +1,6 @@
 'use client';
 
+import { withAuth } from '@/features/auth';
 import ArticleForm from '@/widgets/ArticleForm/ui/ArticleForm';
 import styled from '@emotion/styled';
 import React from 'react';
@@ -30,4 +31,4 @@ const Title = styled.h1`
   padding-bottom: 12px;
 `;
 
-export default EditArticlePage;
+export default withAuth(EditArticlePage);

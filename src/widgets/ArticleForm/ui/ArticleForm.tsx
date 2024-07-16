@@ -56,7 +56,7 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
       createArticle(articleData);
     }
   };
-  console.log('blocks ', blocks);
+
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item

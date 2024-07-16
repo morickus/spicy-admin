@@ -5,6 +5,7 @@ import { ROUTES } from '@/shared/constants/routes';
 import { useQuery } from '@tanstack/react-query';
 import { Spin } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 // TODO: fix types, check build
 export const withAuth = (Component: any) => {
@@ -16,12 +17,17 @@ export const withAuth = (Component: any) => {
       queryFn: () => authControllerGetSessionInfo(),
     });
 
+    useEffect(() => {
+      if (isError) {
+        router.replace(ROUTES.LOGIN);
+      }
+    }, [isError, router]);
+
     if (isLoading) {
       return <Spin />;
     }
 
     if (isError) {
-      router.replace(ROUTES.LOGIN);
       return null;
     }
 
