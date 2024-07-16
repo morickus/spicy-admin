@@ -12,16 +12,16 @@ export const withAuth = (Component: any) => {
   return function withAuth(props: any) {
     const router = useRouter();
 
-    const { isLoading, isError } = useQuery({
+    const { data, isLoading, isError } = useQuery({
       queryKey: ['session'],
       queryFn: () => authControllerGetSessionInfo(),
     });
 
     useEffect(() => {
-      if (isError) {
+      if (isError || (!isLoading && data?.role !== 'ADMIN')) {
         router.replace(ROUTES.LOGIN);
       }
-    }, [isError, router]);
+    }, [data, isLoading, isError, router]);
 
     if (isLoading) {
       return <Spin />;
