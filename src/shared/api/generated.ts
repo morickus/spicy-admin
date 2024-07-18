@@ -62,6 +62,13 @@ export interface ArticleResponseDto {
   updatedAt: string;
 }
 
+export type ArticlesControllerFindByCategory200AllOf = {
+  data?: ArticleResponseDto[];
+};
+
+export type ArticlesControllerFindByCategory200 = ArticlesControllerFindByCategory200AllOf &
+  PaginateResponseDto;
+
 export interface CreateArticleDto {
   categories: string[];
   content: JsonContentDto[];
@@ -73,7 +80,7 @@ export interface UpdateCategoryDto {
 }
 
 export interface CategoryResponseDto {
-  countArticles?: number;
+  countArticles: number;
   id: number;
   name: string;
   slug: string;
@@ -104,6 +111,7 @@ export interface PaginateResponseDto {
   currentPage: number;
   hasNext: boolean;
   hasPrev: boolean;
+  limitPage: number;
   totalPages: number;
 }
 
@@ -280,7 +288,7 @@ export const articlesControllerFindByCategory = (
   params?: ArticlesControllerFindByCategoryParams,
   options?: SecondParameter<typeof createInstance>,
 ) => {
-  return createInstance<ArticleResponseDto[]>(
+  return createInstance<ArticlesControllerFindByCategory200>(
     { url: `/articles/category/${slug}`, method: 'GET', params },
     options,
   );

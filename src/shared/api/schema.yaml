@@ -292,9 +292,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ArticleResponseDto'
+                allOf:
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ArticleResponseDto'
+                  - $ref: '#/components/schemas/PaginateResponseDto'
       tags:
         - Articles
 info:
@@ -352,6 +356,8 @@ components:
     PaginateResponseDto:
       type: object
       properties:
+        limitPage:
+          type: number
         totalPages:
           type: number
         currentPage:
@@ -361,6 +367,7 @@ components:
         hasNext:
           type: boolean
       required:
+        - limitPage
         - totalPages
         - currentPage
         - hasPrev
@@ -398,6 +405,7 @@ components:
         - id
         - slug
         - name
+        - countArticles
     UpdateCategoryDto:
       type: object
       properties:

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "api:download": "curl http://localhost:8000/api-yaml -o .\\src\\shared\\api\\schema.yaml\n",
+    "api:download": "curl http://localhost:8000/api-yaml -o ./src/shared/api/schema.yaml",
     "api:generate": "orval"
   },
   "dependencies": {

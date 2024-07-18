@@ -11,14 +11,15 @@ const ArticlesTable = () => {
   if (error) return <div>Error loading data</div>;
   if (!data) return <div>No data</div>;
 
-  const { currentPage, totalPages } = data;
+  const { limitPage, currentPage, totalPages } = data;
 
   return (
     <>
       <Pagination
+        showQuickJumper
         current={currentPage}
-        total={totalPages}
         showSizeChanger={false}
+        total={totalPages * limitPage}
         onChange={(page: number) => setPagination({ page })}
       />
       <br />
@@ -30,9 +31,10 @@ const ArticlesTable = () => {
       />
       <br />
       <Pagination
+        showQuickJumper
         current={currentPage}
-        total={totalPages}
         showSizeChanger={false}
+        total={totalPages * limitPage}
         onChange={(page: number) => setPagination({ page })}
       />
     </>

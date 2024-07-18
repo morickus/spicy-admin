@@ -14,7 +14,7 @@ const ArticlesPage = () => {
       <Title>Articles</Title>
       <Link href={ROUTES.ARTICLES.CREATE} target="_blank">
         <Button type="primary" style={{ marginBottom: 16 }}>
-          Create category
+          Create article
         </Button>
       </Link>
       <ArticlesTable />
