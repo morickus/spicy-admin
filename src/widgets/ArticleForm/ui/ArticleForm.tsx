@@ -1,16 +1,12 @@
 'use client';
 
 import CategoriesSelect from '@/shared/ui/CategorySelect';
+import useEditor from '@/shared/ui/useEditor';
 import { OutputBlockData } from '@editorjs/editorjs';
 import styled from '@emotion/styled';
 import { Button, Form, FormProps, Input, message } from 'antd';
-import dynamic from 'next/dynamic';
 import React, { FC, useEffect, useState } from 'react';
 import { useArticle } from '../model/useArticle';
-
-const DynamicEditor = dynamic(() => import('@/shared/ui/Editor'), {
-  ssr: false,
-});
 
 interface ArticleFormProps {
   slug?: string;
@@ -23,11 +19,22 @@ type FieldType = {
 
 const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
   const [form] = Form.useForm();
-  const { data, isLoading, error, createArticle, updateArticle, isPending } = useArticle(slug);
+  const { data, isLoading, error, createArticle, updateArticle, isPending, isSuccessCreate } =
+    useArticle(slug);
   const [blocks, setBlocks] = useState<OutputBlockData[]>([]);
+  const { clearEditor, componentEditor } = useEditor({
+    placeholder: 'Enter the text of your article',
+    initialBlocks: blocks,
+    setBlocks,
+    tools: {
+      paragraph: {
+        inlineToolbar: ['bold', 'italic'],
+      },
+    },
+  });
 
   useEffect(() => {
-    if (data) {
+    if (data && slug) {
       form.setFieldsValue({
         title: data.title,
         categories: data.categories.map((c) => c.slug),
@@ -35,7 +42,14 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
       });
       setBlocks(data.content);
     }
-  }, [data, form]);
+  }, [slug, data, form]);
+
+  useEffect(() => {
+    if (isSuccessCreate) {
+      form.resetFields();
+      clearEditor();
+    }
+  }, [isSuccessCreate]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
@@ -71,9 +85,7 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
       >
         <EditorInput placeholder="Title" />
       </Form.Item>
-      <div className="editor">
-        <DynamicEditor initialBlocks={blocks} onChange={(arr) => setBlocks(arr)} />
-      </div>
+      <div className="editor">{componentEditor}</div>
       <Form.Item>
         <Button type="primary" htmlType="submit" disabled={isPending}>
           {slug ? 'Update' : 'Create'} Article

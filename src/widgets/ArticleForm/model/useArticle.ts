@@ -20,7 +20,11 @@ export const useArticle = (slug?: string) => {
     enabled: typeof slug === 'string',
   });
 
-  const { mutate: createArticle, isPending: isPendingCreate } = useMutationWithLoading(
+  const {
+    mutate: createArticle,
+    isPending: isPendingCreate,
+    isSuccess: isSuccessCreate,
+  } = useMutationWithLoading(
     (body: CreateArticleDto) => articlesControllerCreate(body),
     'Article created successfully',
     'Failed to create article',
@@ -35,5 +39,5 @@ export const useArticle = (slug?: string) => {
 
   const isPending = isPendingCreate || isPendingUpdate;
 
-  return { data, isLoading, error, createArticle, updateArticle, isPending };
+  return { data, isLoading, error, createArticle, updateArticle, isPending, isSuccessCreate };
 };
