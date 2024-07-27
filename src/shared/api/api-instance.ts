@@ -5,7 +5,6 @@ export const apiInstance = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'X-Referer': process.env.NEXT_PUBLIC_DOMAIN,
   },
 });
 
