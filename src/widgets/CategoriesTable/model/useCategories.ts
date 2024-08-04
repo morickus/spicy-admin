@@ -3,13 +3,15 @@ import {
   categoriesControllerDelete,
   categoriesControllerFindAll,
   categoriesControllerUpdate,
+  CreateCategoryDto,
+  UpdateCategoryDto,
 } from '@/shared/api/generated';
 import useMutationWithLoading from '@/shared/lib/react-query/useMutationWithLoading';
 import { useQuery } from '@tanstack/react-query';
 
 export interface UpdateCategoryArgs {
   id: number;
-  name: string;
+  body: UpdateCategoryDto;
 }
 
 export const useCategories = () => {
@@ -26,14 +28,14 @@ export const useCategories = () => {
   );
 
   const { mutate: createCategory } = useMutationWithLoading(
-    (name: string) => categoriesControllerCreate({ name }),
+    (body: CreateCategoryDto) => categoriesControllerCreate(body),
     'Category created successfully',
     'Failed to create category',
     ['categories'],
   );
 
   const { mutate: updateCategory } = useMutationWithLoading(
-    ({ id, name }: UpdateCategoryArgs) => categoriesControllerUpdate(id, { name }),
+    ({ id, body }: UpdateCategoryArgs) => categoriesControllerUpdate(id, body),
     'Category updated successfully',
     'Failed to update category',
     ['categories'],

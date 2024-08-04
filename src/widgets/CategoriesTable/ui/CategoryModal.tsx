@@ -1,25 +1,29 @@
+import { CreateCategoryDto } from '@/shared/api/generated';
+import { UpdateCategoryArgs } from '@/widgets/CategoriesTable/model/useCategories';
 import { Form, Input, Modal } from 'antd';
 import React, { useEffect } from 'react';
 
 interface CategoryModalProps {
-  onSubmit: (name: string) => void;
+  onSubmit: (body: CreateCategoryDto) => void;
   onCancel: () => void;
-  initialName?: string;
+  initialData: UpdateCategoryArgs | null;
 }
 
-const CategoryModal: React.FC<CategoryModalProps> = ({ onSubmit, onCancel, initialName = '' }) => {
+const CategoryModal: React.FC<CategoryModalProps> = ({ onSubmit, onCancel, initialData }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({ name: initialName });
-  }, [initialName, form]);
+    if (initialData) {
+      form.setFieldsValue(initialData.body);
+    }
+  }, [initialData, form]);
 
   const handleOk = () => {
     form
       .validateFields()
       .then((values) => {
         form.resetFields();
-        onSubmit(values.name);
+        onSubmit(values);
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
@@ -29,8 +33,8 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ onSubmit, onCancel, initi
   return (
     <Modal
       open={true}
-      title={initialName ? 'Edit category' : 'Create a new category'}
-      okText={initialName ? 'Update' : 'Create'}
+      title={initialData ? 'Edit category' : 'Create a new category'}
+      okText={initialData ? 'Update' : 'Create'}
       cancelText="Cancel"
       onCancel={onCancel}
       onOk={handleOk}
@@ -40,6 +44,13 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ onSubmit, onCancel, initi
           name="name"
           label="Category Name"
           rules={[{ required: true, message: 'Please input the name of the category!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="metaDescription"
+          label="Meta description"
+          rules={[{ max: 300, message: 'Maximum 300 characters!' }]}
         >
           <Input />
         </Form.Item>

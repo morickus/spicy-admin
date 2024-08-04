@@ -5,7 +5,7 @@ import React from 'react';
 
 export const getColumns = (
   deleteCategory: (id: number) => void,
-  editCategory: (id: number, name: string) => void,
+  editCategory: (id: number) => void,
 ): TableProps<CategoryResponseDto>['columns'] => [
   {
     title: 'Slug',
@@ -16,6 +16,11 @@ export const getColumns = (
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+  },
+  {
+    title: 'Meta description',
+    dataIndex: 'metaDescription',
+    key: 'metaDescription',
   },
   {
     width: '150px',
@@ -29,11 +34,7 @@ export const getColumns = (
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Button
-          type="link"
-          onClick={() => editCategory(record.id, record.name)}
-          style={{ padding: '0' }}
-        >
+        <Button type="link" onClick={() => editCategory(record.id)} style={{ padding: '0' }}>
           <EditOutlined />
         </Button>
         <Popconfirm

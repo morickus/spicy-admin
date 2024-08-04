@@ -26,6 +26,11 @@ export const getColumns = (
     key: 'excerpt',
   },
   {
+    title: 'Meta description',
+    dataIndex: 'metaDescription',
+    key: 'metaDescription',
+  },
+  {
     title: 'Created At',
     dataIndex: 'createdAt',
     key: 'createdAt',

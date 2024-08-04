@@ -36,6 +36,7 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
   useEffect(() => {
     if (data && slug) {
       form.setFieldsValue({
+        metaDescription: data.metaDescription,
         title: data.title,
         categories: data.categories.map((c) => c.slug),
         content: data.content,
@@ -73,6 +74,9 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
 
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
+      <Form.Item name="metaDescription" rules={[{ max: 300, message: 'Maximum 300 characters!' }]}>
+        <Input placeholder="Meta description" />
+      </Form.Item>
       <Form.Item
         name="categories"
         rules={[{ required: true, message: 'Please select a category!' }]}
