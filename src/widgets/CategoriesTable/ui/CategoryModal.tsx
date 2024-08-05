@@ -50,7 +50,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ onSubmit, onCancel, initi
         <Form.Item
           name="metaDescription"
           label="Meta description"
-          rules={[{ max: 300, message: 'Maximum 300 characters!' }]}
+          rules={[{ max: 160, message: 'Maximum 160 characters!' }]}
         >
           <Input />
         </Form.Item>

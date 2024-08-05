@@ -74,7 +74,7 @@ const ArticleForm: FC<ArticleFormProps> = ({ slug }) => {
 
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item name="metaDescription" rules={[{ max: 300, message: 'Maximum 300 characters!' }]}>
+      <Form.Item name="metaDescription" rules={[{ max: 160, message: 'Maximum 160 characters!' }]}>
         <Input placeholder="Meta description" />
       </Form.Item>
       <Form.Item
