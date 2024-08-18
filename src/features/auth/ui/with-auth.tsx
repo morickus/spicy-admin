@@ -1,7 +1,6 @@
 'use client';
 
 import { authControllerGetSessionInfo } from '@/shared/api/generated';
-import { ROUTES } from '@/shared/constants/routes';
 import { useQuery } from '@tanstack/react-query';
 import { Spin } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -15,11 +14,12 @@ export const withAuth = (Component: any) => {
     const { data, isLoading, isError } = useQuery({
       queryKey: ['session'],
       queryFn: () => authControllerGetSessionInfo(),
+      retry: false,
     });
 
     useEffect(() => {
       if (isError || (!isLoading && data?.role !== 'ADMIN')) {
-        router.replace(ROUTES.LOGIN);
+        router.replace(`${process.env.NEXT_PUBLIC_DOMAIN}/sign-in`);
       }
     }, [data, isLoading, isError, router]);
 
