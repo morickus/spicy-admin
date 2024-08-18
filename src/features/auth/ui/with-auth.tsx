@@ -22,7 +22,7 @@ export const withAuth = (Component: any) => {
     }
 
     if (data?.role !== 'ADMIN') {
-      return <div>Unauthorized 401</div>;
+      return <div>403 Forbidden</div>;
     }
 
     return <Component {...props} />;
