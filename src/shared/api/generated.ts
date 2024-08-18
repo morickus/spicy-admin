@@ -6,6 +6,13 @@
  */
 import { createInstance } from './api-instance';
 import type { BodyType } from './api-instance';
+export type ArticlesControllerFindByCategory200AllOf = {
+  data?: ArticleResponseDto[];
+};
+
+export type ArticlesControllerFindByCategory200 = ArticlesControllerFindByCategory200AllOf &
+  PaginateResponseDto;
+
 export type ArticlesControllerFindByCategoryParams = {
   page?: number;
   limit?: number;
@@ -22,15 +29,15 @@ export type ArticlesControllerFindAllParams = {
   limit?: number;
 };
 
-export type UsersControllerFindAll200AllOf = {
-  data?: UserResponseDto[];
-};
-
 export type UsersControllerFindAll200 = UsersControllerFindAll200AllOf & PaginateResponseDto;
 
 export type UsersControllerFindAllParams = {
   page?: number;
   limit?: number;
+};
+
+export type AuthControllerGoogleAuthBody = {
+  code?: string;
 };
 
 export interface DataDto {
@@ -49,27 +56,6 @@ export interface UpdateArticleDto {
   metaDescription?: string;
   title?: string;
 }
-
-export interface ArticleResponseDto {
-  author: UserResponseDto[];
-  authorId: number;
-  categories: CategoryResponseDto[];
-  content: JsonContentDto[];
-  createdAt: string;
-  excerpt: string;
-  id: number;
-  metaDescription?: string;
-  slug: string;
-  title: string;
-  updatedAt: string;
-}
-
-export type ArticlesControllerFindByCategory200AllOf = {
-  data?: ArticleResponseDto[];
-};
-
-export type ArticlesControllerFindByCategory200 = ArticlesControllerFindByCategory200AllOf &
-  PaginateResponseDto;
 
 export interface CreateArticleDto {
   categories: string[];
@@ -101,10 +87,28 @@ export interface UserResponseDto {
   id: number;
 }
 
+export type UsersControllerFindAll200AllOf = {
+  data?: UserResponseDto[];
+};
+
 export interface ArticleAllResponseDto {
   author: UserResponseDto[];
   authorId: number;
   categories: CategoryResponseDto[];
+  createdAt: string;
+  excerpt: string;
+  id: number;
+  metaDescription?: string;
+  slug: string;
+  title: string;
+  updatedAt: string;
+}
+
+export interface ArticleResponseDto {
+  author: UserResponseDto[];
+  authorId: number;
+  categories: CategoryResponseDto[];
+  content: JsonContentDto[];
   createdAt: string;
   excerpt: string;
   id: number;
@@ -122,28 +126,40 @@ export interface PaginateResponseDto {
   totalPages: number;
 }
 
+export type GetSessionInfoDtoRole =
+  (typeof GetSessionInfoDtoRole)[keyof typeof GetSessionInfoDtoRole];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetSessionInfoDtoRole = {
+  USER: 'USER',
+  ADMIN: 'ADMIN',
+} as const;
+
 export interface GetSessionInfoDto {
   email: string;
   exp: number;
   iat: number;
   id: number;
-  role: string;
+  role: GetSessionInfoDtoRole;
 }
 
-export interface SignInBodyDto {
+export interface VerifyCodeDto {
+  code: string;
   email: string;
-  password: string;
 }
 
-export interface SignUpBodyDto {
+export interface SendCodeDto {
   email: string;
-  password: string;
+}
+
+export interface SignUpDto {
+  email: string;
 }
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 export const authControllerSignUp = (
-  signUpBodyDto: BodyType<SignUpBodyDto>,
+  signUpDto: BodyType<SignUpDto>,
   options?: SecondParameter<typeof createInstance>,
 ) => {
   return createInstance<void>(
@@ -151,22 +167,52 @@ export const authControllerSignUp = (
       url: `/auth/sign-up`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: signUpBodyDto,
+      data: signUpDto,
     },
     options,
   );
 };
 
-export const authControllerSignIn = (
-  signInBodyDto: BodyType<SignInBodyDto>,
+export const authControllerSendCode = (
+  sendCodeDto: BodyType<SendCodeDto>,
   options?: SecondParameter<typeof createInstance>,
 ) => {
   return createInstance<void>(
     {
-      url: `/auth/sign-in`,
+      url: `/auth/send-code`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: signInBodyDto,
+      data: sendCodeDto,
+    },
+    options,
+  );
+};
+
+export const authControllerVerifyCode = (
+  verifyCodeDto: BodyType<VerifyCodeDto>,
+  options?: SecondParameter<typeof createInstance>,
+) => {
+  return createInstance<void>(
+    {
+      url: `/auth/verify-code`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: verifyCodeDto,
+    },
+    options,
+  );
+};
+
+export const authControllerGoogleAuth = (
+  authControllerGoogleAuthBody: BodyType<AuthControllerGoogleAuthBody>,
+  options?: SecondParameter<typeof createInstance>,
+) => {
+  return createInstance<void>(
+    {
+      url: `/auth/google`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: authControllerGoogleAuthBody,
     },
     options,
   );
@@ -314,8 +360,14 @@ export const articlesControllerFindByCategory = (
 export type AuthControllerSignUpResult = NonNullable<
   Awaited<ReturnType<typeof authControllerSignUp>>
 >;
-export type AuthControllerSignInResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerSignIn>>
+export type AuthControllerSendCodeResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerSendCode>>
+>;
+export type AuthControllerVerifyCodeResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerVerifyCode>>
+>;
+export type AuthControllerGoogleAuthResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGoogleAuth>>
 >;
 export type AuthControllerSignOutResult = NonNullable<
   Awaited<ReturnType<typeof authControllerSignOut>>

@@ -9,22 +9,55 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SignUpBodyDto'
+              $ref: '#/components/schemas/SignUpDto'
       responses:
         '201':
           description: ''
       tags:
         - Auth
-  /auth/sign-in:
+  /auth/send-code:
     post:
-      operationId: AuthController_signIn
+      operationId: AuthController_sendCode
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SignInBodyDto'
+              $ref: '#/components/schemas/SendCodeDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Auth
+  /auth/verify-code:
+    post:
+      operationId: AuthController_verifyCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Auth
+  /auth/google:
+    post:
+      operationId: AuthController_googleAuth
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
       responses:
         '200':
           description: ''
@@ -328,30 +361,34 @@ tags: []
 servers: []
 components:
   schemas:
-    SignUpBodyDto:
+    SignUpDto:
       type: object
       properties:
         email:
           type: string
           example: test@example.com
-        password:
-          type: string
-          example: '1234'
       required:
         - email
-        - password
-    SignInBodyDto:
+    SendCodeDto:
       type: object
       properties:
         email:
           type: string
           example: test@example.com
-        password:
-          type: string
-          example: '1234'
       required:
         - email
-        - password
+    VerifyCodeDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        code:
+          type: string
+          example: '123456'
+      required:
+        - email
+        - code
     GetSessionInfoDto:
       type: object
       properties:
@@ -361,6 +398,9 @@ components:
           type: string
         role:
           type: string
+          enum:
+            - USER
+            - ADMIN
         iat:
           type: number
         exp:
