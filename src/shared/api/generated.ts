@@ -6,16 +6,8 @@
  */
 import { createInstance } from './api-instance';
 import type { BodyType } from './api-instance';
-export type ArticlesControllerFindByCategory200AllOf = {
-  data?: ArticleResponseDto[];
-};
-
-export type ArticlesControllerFindByCategory200 = ArticlesControllerFindByCategory200AllOf &
-  PaginateResponseDto;
-
-export type ArticlesControllerFindByCategoryParams = {
-  page?: number;
-  limit?: number;
+export type ArticlesControllerGetRandomArticlesParams = {
+  count?: number;
 };
 
 export type ArticlesControllerFindAll200AllOf = {
@@ -27,6 +19,7 @@ export type ArticlesControllerFindAll200 = ArticlesControllerFindAll200AllOf & P
 export type ArticlesControllerFindAllParams = {
   page?: number;
   limit?: number;
+  tags?: unknown[];
 };
 
 export type UsersControllerFindAll200 = UsersControllerFindAll200AllOf & PaginateResponseDto;
@@ -119,11 +112,11 @@ export interface ArticleResponseDto {
 }
 
 export interface PaginateResponseDto {
-  currentPage: number;
   hasNext: boolean;
   hasPrev: boolean;
-  limitPage: number;
-  totalPages: number;
+  limit: number;
+  page: number;
+  total: number;
 }
 
 export type GetSessionInfoDtoRole =
@@ -339,22 +332,21 @@ export const articlesControllerDelete = (
   return createInstance<ArticleResponseDto>({ url: `/articles/${id}`, method: 'DELETE' }, options);
 };
 
+export const articlesControllerGetRandomArticles = (
+  params?: ArticlesControllerGetRandomArticlesParams,
+  options?: SecondParameter<typeof createInstance>,
+) => {
+  return createInstance<ArticleAllResponseDto[]>(
+    { url: `/articles/random`, method: 'GET', params },
+    options,
+  );
+};
+
 export const articlesControllerFindOne = (
   slug: string,
   options?: SecondParameter<typeof createInstance>,
 ) => {
   return createInstance<ArticleResponseDto>({ url: `/articles/${slug}`, method: 'GET' }, options);
-};
-
-export const articlesControllerFindByCategory = (
-  slug: string,
-  params?: ArticlesControllerFindByCategoryParams,
-  options?: SecondParameter<typeof createInstance>,
-) => {
-  return createInstance<ArticlesControllerFindByCategory200>(
-    { url: `/articles/category/${slug}`, method: 'GET', params },
-    options,
-  );
 };
 
 export type AuthControllerSignUpResult = NonNullable<
@@ -405,9 +397,9 @@ export type ArticlesControllerUpdateResult = NonNullable<
 export type ArticlesControllerDeleteResult = NonNullable<
   Awaited<ReturnType<typeof articlesControllerDelete>>
 >;
+export type ArticlesControllerGetRandomArticlesResult = NonNullable<
+  Awaited<ReturnType<typeof articlesControllerGetRandomArticles>>
+>;
 export type ArticlesControllerFindOneResult = NonNullable<
   Awaited<ReturnType<typeof articlesControllerFindOne>>
->;
-export type ArticlesControllerFindByCategoryResult = NonNullable<
-  Awaited<ReturnType<typeof articlesControllerFindByCategory>>
 >;

@@ -15,16 +15,16 @@ const UsersTable = () => {
     setPagination({ page, limit: pageSize });
   };
 
-  const { currentPage, totalPages } = data;
+  const { page, total } = data;
 
   return (
     <>
       <Table rowKey="id" dataSource={data?.data} pagination={false} columns={getColumns()} />
       <br />
       <Pagination
-        current={currentPage}
+        current={page}
         pageSize={pagination.limit}
-        total={totalPages}
+        total={total}
         onChange={handleTableChange}
         showSizeChanger
         pageSizeOptions={['10', '20', '30', '50']}

@@ -242,6 +242,12 @@ paths:
           example: 10
           schema:
             type: number
+        - name: tags
+          required: false
+          in: query
+          schema:
+            type: array
+            items: {}
       responses:
         '200':
           description: ''
@@ -298,6 +304,26 @@ paths:
                 $ref: '#/components/schemas/ArticleResponseDto'
       tags:
         - Articles
+  /articles/random:
+    get:
+      operationId: ArticlesController_getRandomArticles
+      parameters:
+        - name: count
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleAllResponseDto'
+      tags:
+        - Articles
   /articles/{slug}:
     get:
       operationId: ArticlesController_findOne
@@ -314,42 +340,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArticleResponseDto'
-      tags:
-        - Articles
-  /articles/category/{slug}:
-    get:
-      operationId: ArticlesController_findByCategory
-      parameters:
-        - name: slug
-          required: true
-          in: path
-          schema:
-            type: string
-        - name: page
-          required: false
-          in: query
-          example: 1
-          schema:
-            type: number
-        - name: limit
-          required: false
-          in: query
-          example: 10
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/ArticleResponseDto'
-                  - $ref: '#/components/schemas/PaginateResponseDto'
       tags:
         - Articles
 info:
@@ -414,20 +404,20 @@ components:
     PaginateResponseDto:
       type: object
       properties:
-        limitPage:
+        page:
           type: number
-        totalPages:
+        limit:
           type: number
-        currentPage:
+        total:
           type: number
         hasPrev:
           type: boolean
         hasNext:
           type: boolean
       required:
-        - limitPage
-        - totalPages
-        - currentPage
+        - page
+        - limit
+        - total
         - hasPrev
         - hasNext
     UserResponseDto:

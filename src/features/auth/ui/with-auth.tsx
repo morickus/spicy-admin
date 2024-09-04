@@ -18,7 +18,7 @@ export const withAuth = (Component: any) => {
     }
 
     if (isError) {
-      return null;
+      return <div>error</div>;
     }
 
     if (data?.role !== 'ADMIN') {
